@@ -11,9 +11,14 @@
 
 # in a different terminal
 ❯ go get go.uber.org/cadence
-❯ go build -i -o bins/worker main.go simple-activity.go simple-workflow.go
+❯ go build -o bins/worker main.go simple-activity.go simple-workflow.go
 ❯ ./bins/worker
 
 # in a different terminal
 ❯ cadence --domain tdc workflow run --tl tdcTasks --wt main.TDCWorkflow --et 60 -i '"cadence"'
 ```
+
+### TODO List
+- [ ] HTTP Signal
+- [ ] Makefile
+- [ ] New Activity

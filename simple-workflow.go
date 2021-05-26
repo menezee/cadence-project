@@ -18,13 +18,17 @@ func TDCWorkflow(ctx workflow.Context, value string) error {
 	}
 	ctx = workflow.WithActivityOptions(ctx, ao)
 
-	future := workflow.ExecuteActivity(ctx, SimpleActivity, value)
+
 	var result string
+	err := workflow.Sleep(ctx, time.Minute * 10)
+	if err != nil {
+		return err
+	}
+	future := workflow.ExecuteActivity(ctx, SimpleActivity, value)
 	if err := future.Get(ctx, &result); err != nil {
 		return err
 	}
 	workflow.GetLogger(ctx).Info("Done", zap.String("result", result))
 
-	//workflow.Sleep(ctx, time.Minute * 10) // TODO validate
 	return nil
 }
