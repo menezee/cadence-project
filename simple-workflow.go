@@ -24,5 +24,7 @@ func TDCWorkflow(ctx workflow.Context, value string) error {
 		return err
 	}
 	workflow.GetLogger(ctx).Info("Done", zap.String("result", result))
+
+	//workflow.Sleep(ctx, time.Minute * 10) // TODO validate
 	return nil
 }
