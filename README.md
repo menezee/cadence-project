@@ -10,6 +10,7 @@
 ❯ docker-compose up
 
 # in a different terminal
+❯ go get go.uber.org/cadence
 ❯ go build -i -o bins/worker main.go simple-activity.go simple-workflow.go
 ❯ ./bins/worker
 
