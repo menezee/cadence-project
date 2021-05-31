@@ -70,6 +70,7 @@ func startWorker(logger *zap.Logger, service workflowserviceclient.Interface) {
 		workerOptions)
 
 	worker.RegisterActivity(SimpleActivity)
+	worker.RegisterActivity(AgeCheckActivity)
 	worker.RegisterWorkflow(TDCWorkflow)
 
 	err := worker.Start()

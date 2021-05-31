@@ -13,6 +13,7 @@
 ❯ go get go.uber.org/cadence
 # or go mod download
 
+❯ make register-domain
 ❯ make bins
 ❯ make worker
 
@@ -20,6 +21,8 @@
 ❯ alias cadence="docker run --rm ubercadence/cli:master --address host.docker.internal:7933 "
 ❯ make start
 
+# in a different terminal
+❯ make signal wf=<workflowIdFromPreviousCommand>
 ```
 
 ### TODO List
