@@ -11,11 +11,15 @@
 
 # in a different terminal
 ❯ go get go.uber.org/cadence
-❯ go build -o bins/worker main.go simple-activity.go simple-workflow.go
-❯ ./bins/worker
+# or go mod download
+
+❯ make bins
+❯ make worker
 
 # in a different terminal
-❯ cadence --domain tdc workflow run --tl tdcTasks --wt main.TDCWorkflow --et 60 -i '"cadence"'
+❯ alias cadence="docker run --rm ubercadence/cli:master --address host.docker.internal:7933 "
+❯ make start
+
 ```
 
 ### TODO List
