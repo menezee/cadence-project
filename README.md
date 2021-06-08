@@ -30,8 +30,3 @@ if you want to send the signal through an http request:
 ❯ make http-server
 ❯ curl -X POST "http://localhost:3030/bank-message-signal?workflowId=<workflowIdFromPreviousCommand>&bankMessage=tudo%20certo"
 ```
-
-### TODO List
-- [ ] HTTP Signal
-- [ ] Makefile
-- [ ] New Activity
