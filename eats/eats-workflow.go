@@ -26,7 +26,7 @@ func EatsWorkflow(ctx workflow.Context, tipAmount int) error {
 		return err
 	}
 
-	err := workflow.Sleep(ctx, time.Second * 10)
+	err := workflow.Sleep(ctx, time.Second * 20)
 	if err != nil {
 		return err
 	}
