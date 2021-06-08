@@ -1,10 +1,13 @@
-.PHONY : bins
+.PHONY : bins http-server
 
 bins:
-	go build -o bins/worker *.go
+	go build -o bins/worker *.go & go build -o bins/http-server http-server/main.go
 
 worker:
 	./bins/worker
+
+http-server:
+	./bins/http-server
 
 start:
 	docker run --rm ubercadence/cli:master --address host.docker.internal:7933 --domain tdc workflow run --tl tdcTasks --wt main.TDCWorkflow --et 60 -i '"cadence"'
@@ -14,3 +17,4 @@ signal:
 
 register-domain:
 	docker run --rm ubercadence/cli:master --address host.docker.internal:7933 --domain tdc domain register
+

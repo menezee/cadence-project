@@ -25,6 +25,12 @@
 ❯ make signal wf=<workflowIdFromPreviousCommand>
 ```
 
+if you want to send the signal through an http request:
+```shell
+❯ make http-server
+❯ curl -X POST "http://localhost:3030/signal-workflow?workflowId=<workflowIdFromPreviousCommand>&age=25"
+```
+
 ### TODO List
 - [ ] HTTP Signal
 - [ ] Makefile
