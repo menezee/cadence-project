@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/menezee/cadence-project/eats"
 	"github.com/uber-go/tally"
 	_ "go.uber.org/cadence/.gen/go/cadence"
 	"go.uber.org/cadence/.gen/go/cadence/workflowserviceclient"
@@ -69,9 +70,13 @@ func startWorker(logger *zap.Logger, service workflowserviceclient.Interface) {
 		TaskListName,
 		workerOptions)
 
-	worker.RegisterActivity(SimpleActivity)
-	worker.RegisterActivity(AgeCheckActivity)
-	worker.RegisterWorkflow(TDCWorkflow)
+	//worker.RegisterActivity(SimpleActivity)
+	//worker.RegisterActivity(AgeCheckActivity)
+	//worker.RegisterWorkflow(TDCWorkflow)
+
+	worker.RegisterActivity(eats.DebitActivity)
+	worker.RegisterActivity(eats.CreditActivity)
+	worker.RegisterWorkflow(eats.EatsWorkflow)
 
 	err := worker.Start()
 	if err != nil {

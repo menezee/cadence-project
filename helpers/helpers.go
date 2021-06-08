@@ -4,6 +4,8 @@ import (
 	"go.uber.org/cadence/.gen/go/cadence/workflowserviceclient"
 	"go.uber.org/yarpc"
 	"go.uber.org/yarpc/transport/tchannel"
+	"go.uber.org/zap"
+	"go.uber.org/zap/zapcore"
 )
 
 const (
@@ -30,4 +32,17 @@ func BuildCadenceClient() workflowserviceclient.Interface {
 	}
 
 	return workflowserviceclient.New(dispatcher.ClientConfig(CadenceService))
+}
+
+func BuildLogger() *zap.Logger {
+	config := zap.NewDevelopmentConfig()
+	config.Level.SetLevel(zapcore.InfoLevel)
+
+	var err error
+	logger, err := config.Build()
+	if err != nil {
+		panic("Failed to setup logger")
+	}
+
+	return logger
 }
