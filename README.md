@@ -19,16 +19,16 @@
 
 # in a different terminal
 ❯ alias cadence="docker run --rm ubercadence/cli:master --address host.docker.internal:7933 "
-❯ make start
+❯ make start-eats-workflow
 
 # in a different terminal
-❯ make signal wf=<workflowIdFromPreviousCommand>
+❯ make signal-eats-workflow wf=<workflowIdFromPreviousCommand>
 ```
 
 if you want to send the signal through an http request:
 ```shell
 ❯ make http-server
-❯ curl -X POST "http://localhost:3030/signal-workflow?workflowId=<workflowIdFromPreviousCommand>&age=25"
+❯ curl -X POST "http://localhost:3030/bank-message-signal?workflowId=<workflowIdFromPreviousCommand>&bankMessage=tudo%20certo"
 ```
 
 ### TODO List
