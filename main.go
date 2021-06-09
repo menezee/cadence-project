@@ -2,86 +2,41 @@ package main
 
 import (
 	"github.com/menezee/cadence-project/eats"
+	"github.com/menezee/cadence-project/helpers"
 	"github.com/uber-go/tally"
 	_ "go.uber.org/cadence/.gen/go/cadence"
 	"go.uber.org/cadence/.gen/go/cadence/workflowserviceclient"
 	"go.uber.org/cadence/worker"
-	"go.uber.org/yarpc"
 	_ "go.uber.org/yarpc/api/transport"
-	"go.uber.org/yarpc/transport/tchannel"
 	"go.uber.org/zap"
-	"go.uber.org/zap/zapcore"
 )
 
-var HostPort = "127.0.0.1:7933"
-var Domain = "tdc"
-var TaskListName = "tdcTasks"
-var ClientName = "simpleworker"
-var CadenceService = "cadence-frontend"
-
 func main() {
-	cadenceClient := buildCadenceClient()
-	startWorker(buildLogger(), cadenceClient)
+	cadenceClient := helpers.BuildCadenceClient()
+	startWorker(helpers.BuildLogger(), cadenceClient)
 	select {}
 }
 
-func buildLogger() *zap.Logger {
-	config := zap.NewDevelopmentConfig()
-	config.Level.SetLevel(zapcore.InfoLevel)
-
-	var err error
-	logger, err := config.Build()
-	if err != nil {
-		panic("Failed to setup logger")
-	}
-
-	return logger
-}
-
-func buildCadenceClient() workflowserviceclient.Interface {
-	ch, err := tchannel.NewChannelTransport(tchannel.ServiceName(ClientName))
-	if err != nil {
-		panic("Failed to setup tchannel")
-	}
-	dispatcher := yarpc.NewDispatcher(yarpc.Config{
-		Name: ClientName,
-		Outbounds: yarpc.Outbounds{
-			CadenceService: {Unary: ch.NewSingleOutbound(HostPort)},
-		},
-	})
-	if err := dispatcher.Start(); err != nil {
-		panic("Failed to start dispatcher")
-	}
-
-	return workflowserviceclient.New(dispatcher.ClientConfig(CadenceService))
-}
-
 func startWorker(logger *zap.Logger, service workflowserviceclient.Interface) {
-	// TaskListName identifies set of client workflows, activities, and workers.
-	// It could be your group or client or application name.
 	workerOptions := worker.Options{
 		Logger:       logger,
-		MetricsScope: tally.NewTestScope(TaskListName, map[string]string{}),
+		MetricsScope: tally.NewTestScope(helpers.TaskListName, map[string]string{}),
 	}
 
-	worker := worker.New(
+	workerInstance := worker.New(
 		service,
-		Domain,
-		TaskListName,
+		helpers.Domain,
+		helpers.TaskListName,
 		workerOptions)
 
-	//worker.RegisterActivity(SimpleActivity)
-	//worker.RegisterActivity(AgeCheckActivity)
-	//worker.RegisterWorkflow(TDCWorkflow)
+	workerInstance.RegisterActivity(eats.DebitActivity)
+	workerInstance.RegisterActivity(eats.CreditActivity)
+	workerInstance.RegisterWorkflow(eats.CourierTipWorkflow)
 
-	worker.RegisterActivity(eats.DebitActivity)
-	worker.RegisterActivity(eats.CreditActivity)
-	worker.RegisterWorkflow(eats.EatsWorkflow)
-
-	err := worker.Start()
+	err := workerInstance.Start()
 	if err != nil {
-		panic("Failed to start worker")
+		panic("Failed to start workerInstance")
 	}
 
-	logger.Info("Started Worker.", zap.String("worker", TaskListName))
+	logger.Info("Started Worker.", zap.String("TaskListName:", helpers.TaskListName))
 }

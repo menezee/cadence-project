@@ -16,9 +16,9 @@ var DefaultActivityOptions = workflow.ActivityOptions{
 	}
 const BankConfirmationSignalToken = "BankConfirmationSignalToken"
 
-func EatsWorkflow(ctx workflow.Context, tipAmount int) error {
+func CourierTipWorkflow(ctx workflow.Context, tipAmount int) error {
 	ctx = workflow.WithActivityOptions(ctx, DefaultActivityOptions)
-	workflow.GetLogger(ctx).Info("EatsWorkflow started", zap.Int("Tip amount", tipAmount))
+	workflow.GetLogger(ctx).Info("CourierTipWorkflow started", zap.Int("Tip amount", tipAmount))
 
 	var debitResult bool
 	debitFuture := workflow.ExecuteActivity(ctx, DebitActivity, tipAmount)
