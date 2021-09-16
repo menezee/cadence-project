@@ -32,6 +32,10 @@ func startWorker(logger *zap.Logger, service workflowserviceclient.Interface) {
 	workerInstance.RegisterActivity(eats.DebitActivity)
 	workerInstance.RegisterActivity(eats.CreditActivity)
 	workerInstance.RegisterWorkflow(eats.CourierTipWorkflow)
+	workerInstance.RegisterActivity(eats.PaymentActivity)
+	workerInstance.RegisterActivity(eats.ETAActivity)
+	workerInstance.RegisterActivity(eats.PersistActivity)
+	workerInstance.RegisterWorkflow(eats.OrderWorkflow)
 
 	err := workerInstance.Start()
 	if err != nil {

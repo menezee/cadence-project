@@ -11,7 +11,7 @@ import (
 const (
 	HostPort       = "127.0.0.1:7933"
 	Domain         = "tdc"
-	TaskListName   = "tdcTasks"
+	TaskListName   = "orderTasks"
 	ClientName     = "simpleworker"
 	CadenceService = "cadence-frontend"
 )

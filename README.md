@@ -30,3 +30,13 @@ if you want to send the signal through an http request:
 ❯ make http-server
 ❯ curl -X POST "http://localhost:3030/bank-message-signal?workflowId=<workflowIdFromPreviousCommand>&bankMessage=tudo%20certo"
 ```
+ 
+To start Order Workflow:
+```
+# skip the docker run and make start
+❯ make http-server
+❯ curl -X POST "http://localhost:3030/create-order?totalValue=50"
+❯ curl -X GET "http://localhost:3030/get-status?workflowId=<workflowIdFromPreviousPOSTResponse>"
+❯ curl -X POST "http://localhost:3030/order-received?workflowId=<workflowIdFromPreviousPOSTResponse>"
+``` 
+

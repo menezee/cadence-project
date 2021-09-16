@@ -11,7 +11,7 @@ import (
 const BaseHost = "https://tempapi.proj.me/api/6oiLb_8si"
 
 type AccountTransaction struct {
-	Host string
+	Host   string
 	Logger *zap.Logger
 }
 
@@ -55,7 +55,7 @@ func NewAccountTransactionService() AccountTransaction {
 	logger := helpers.BuildLogger()
 
 	return AccountTransaction{
-		Host: BaseHost,
+		Host:   BaseHost,
 		Logger: logger,
 	}
 }
