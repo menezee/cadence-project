@@ -41,6 +41,13 @@ func signalHelloWorld(w http.ResponseWriter, r *http.Request) {
 	_, _ = w.Write(js)
 }
 
+func addHeaders(w http.ResponseWriter) {
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "*")
+	w.Header().Set("Access-Control-Allow-Headers", "*")
+}
+
 func getWorkflowHistory(w http.ResponseWriter, r http.Request) {
 	workflowId := r.URL.Query().Get("workflowId")
 	runId := r.URL.Query().Get("runId")
@@ -88,7 +95,7 @@ func triggerOrderWorkflow(memory *map[workflowID]map[string]interface{}) func(ht
 			(*memory)[execution.ID] = make(map[string]interface{}, 4)
 
 			js, _ := json.Marshal(execution)
-			w.Header().Set("Content-Type", "application/json")
+			addHeaders(w)
 			_, _ = w.Write(js)
 		} else {
 			_, _ = w.Write([]byte("Invalid Method!" + r.Method))
@@ -103,7 +110,7 @@ func getOrderWorkflowStatus(memory *map[workflowID]map[string]interface{}) func(
 
 			fmt.Println("Started getOrderWorkflowStatus", "WorkflowId", workflowId)
 			js, _ := json.Marshal((*memory)[workflowId])
-			w.Header().Set("Content-Type", "application/json")
+			addHeaders(w)
 			_, _ = w.Write(js)
 		} else {
 			_, _ = w.Write([]byte("Invalid Method!" + r.Method))
@@ -127,8 +134,7 @@ func finishOrderWorkflow(memory *map[workflowID]map[string]interface{}) func(htt
 
 			fmt.Println("Finish order workflow:", "WorkflowId", workflowId)
 			js, _ := json.Marshal("Success")
-
-			w.Header().Set("Content-Type", "application/json")
+			addHeaders(w)
 			_, _ = w.Write(js)
 		} else {
 			_, _ = w.Write([]byte("Invalid Method!" + r.Method))
@@ -155,7 +161,7 @@ func persistStepOrderWorkflow(memory *map[workflowID]map[string]interface{}) fun
 			}
 
 			js, _ := json.Marshal("Success")
-			w.Header().Set("Content-Type", "application/json")
+			addHeaders(w)
 			_, _ = w.Write(js)
 		} else {
 			_, _ = w.Write([]byte("Invalid Method!" + r.Method))
